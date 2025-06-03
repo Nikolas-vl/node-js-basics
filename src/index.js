@@ -1,5 +1,5 @@
 // src/index.js
 
-const message = "Hello node";
+import { startServer } from './server.js';
 
-console.log(message);
+startServer();
