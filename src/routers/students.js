@@ -1,32 +1,13 @@
 import { Router } from 'express';
-import { getAllStudents, getStudentById } from '../services/students.js';
 
-const studentsRouter = Router();
+import {
+  getStudentsController,
+  getStudentByIdController,
+} from '../controllers/students.js';
 
-studentsRouter.get('/students', async (req, res) => {
-  const students = await getAllStudents();
+const router = Router();
 
-  res.status(200).json({
-    data: students,
-  });
-});
+router.get('/students', getStudentsController);
+router.get('/students/:studentId', getStudentByIdController);
 
-studentsRouter.get('/students/:studentId', async (req, res, next) => {
-  const { studentId } = req.params;
-  const student = await getStudentById(studentId);
-
-  // Відповідь, якщо контакт не знайдено
-  if (!student) {
-    res.status(404).json({
-      message: 'Student not found',
-    });
-    return;
-  }
-
-  // Відповідь, якщо контакт знайдено
-  res.status(200).json({
-    data: student,
-  });
-});
-
-export default studentsRouter;
+export default router;
