@@ -13,18 +13,27 @@ export const createStudentSchema = Joi.object({
   onDuty: Joi.boolean(),
 });
 
-const dataToValidate = {
-  name: 'John Doe',
-  age: 12,
-  gender: 'male',
-  avgMark: 10.2,
-};
-
-const validationResult = createStudentSchema.validate(dataToValidate, {
-  abortEarly: false,
+export const updateStudentSchema = Joi.object({
+  name: Joi.string().min(3).max(30),
+  email: Joi.string().email(),
+  age: Joi.number().integer().min(6).max(16),
+  gender: Joi.string().valid('male', 'female', 'other'),
+  avgMark: Joi.number().min(2).max(12),
+  onDuty: Joi.boolean(),
 });
-if (validationResult.error) {
-  console.error(validationResult.error.message);
-} else {
-  console.log('Data is valid!');
-}
+
+// const dataToValidate = {
+//   name: 'John Doe',
+//   age: 12,
+//   gender: 'male',
+//   avgMark: 10.2,
+// };
+
+// const validationResult = createStudentSchema.validate(dataToValidate, {
+//   abortEarly: false,
+// });
+// if (validationResult.error) {
+//   console.error(validationResult.error.message);
+// } else {
+//   console.log('Data is valid!');
+// }
