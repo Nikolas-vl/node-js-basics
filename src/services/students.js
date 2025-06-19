@@ -1,5 +1,4 @@
 // src/services/students.js
-import { raw } from 'express';
 import { StudentsCollection } from '../db/models/student.js';
 
 export const getAllStudents = async () => {
