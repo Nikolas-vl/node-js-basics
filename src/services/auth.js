@@ -7,7 +7,12 @@ import path from 'node:path';
 import fs from 'node:fs/promises';
 
 import { UsersCollection } from '../db/models/user.js';
-import { FIFTEEN_MINUTES, ONE_DAY, TEMPLATES_DIR } from '../constants/index.js';
+import {
+  FIFTEEN_MINUTES,
+  JWT,
+  ONE_DAY,
+  TEMPLATES_DIR,
+} from '../constants/index.js';
 import { SessionCollection } from '../db/models/session.js';
 import { SMTP } from '../constants/index.js';
 import { getEnvVar } from '../utils/getEnvVar.js';
@@ -91,14 +96,6 @@ export const refreshUsersSession = async ({ sessionId, refreshToken }) => {
   });
 };
 
-export const resetUserEmail = async (email) => {
-  const user = UsersCollection.findOne({ email });
-
-  if (!user) {
-    throw createHttpError(401, 'User not found');
-  }
-};
-
 export const requestResetToken = async (email) => {
   const user = await UsersCollection.findOne({ email });
   if (!user) {
@@ -110,7 +107,7 @@ export const requestResetToken = async (email) => {
       sub: user._id,
       email,
     },
-    getEnvVar('JWT_SECRET'),
+    getEnvVar(JWT.JWT_SECRET),
     {
       expiresIn: '15m',
     },
@@ -143,7 +140,7 @@ export const resetPassword = async (payload) => {
   let entries;
 
   try {
-    entries = jwt.verify(payload.token, getEnvVar('JWT_SECRET'));
+    entries = jwt.verify(payload.token, getEnvVar(JWT.JWT_SECRET));
   } catch (err) {
     if (err instanceof Error) throw createHttpError(401, err.message);
     throw err;

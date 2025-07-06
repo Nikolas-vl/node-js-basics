@@ -21,4 +21,8 @@ export const SMTP = {
   SMTP_FROM: 'SMTP_FROM',
 };
 
+export const JWT = {
+  JWT_SECRET: 'JWT_SECRET',
+};
+
 export const TEMPLATES_DIR = path.join(process.cwd(), 'src', 'templates');
